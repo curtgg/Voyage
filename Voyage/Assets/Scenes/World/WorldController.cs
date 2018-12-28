@@ -4,31 +4,50 @@ using UnityEngine;
 
 public class WorldController : MonoBehaviour {
 
-    public GameObject block;
-    public int worldSize = 2;
+    public Material textureAtlas;
+    public static int columnHeight = 16;
+    public static int chunkSize = 8;
+    public static Dictionary<string, Chunk> chunks;
 
-    public IEnumerator BuildWorld()
+    public static string BuildChunkName(Vector3 v)
     {
-        for (int z = 0; z < worldSize; z++){
-            for (int y = 0; y < worldSize; y++){
-                for (int x = 0; x < worldSize; x++){
-                    Vector3 position = new Vector3(x, y, z);
-                    GameObject cube = GameObject.Instantiate(block, position, Quaternion.identity);
-                    cube.name = x + "-" + y + "-" + z;
-                    //cube.GetComponent<Renderer>().material = new Material(Shader.Find("Standard"));
-                }
-                yield return null;
-            }
-        }
+        return (int)v.x + "_" +
+                     (int)v.y + "_" +
+                     (int)v.z;
     }
 
-	// Use this for initialization
-	void Start () {
-        StartCoroutine(BuildWorld());
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    IEnumerator BuildChunkColumn()
+    {
+        for (int i = 0; i < columnHeight; i++)
+        {
+            Vector3 chunkPosition = new Vector3(this.transform.position.x,
+                                                i * chunkSize,
+                                                this.transform.position.z);
+            Chunk c = new Chunk(chunkPosition, textureAtlas);
+            c.chunk.transform.parent = this.transform;
+            chunks.Add(c.chunk.name, c);
+        }
+
+        foreach (KeyValuePair<string, Chunk> c in chunks)
+        {
+            c.Value.DrawChunk();
+            yield return null;
+        }
+
+    }
+
+    // Use this for initialization
+    void Start()
+    {
+        chunks = new Dictionary<string, Chunk>();
+        this.transform.position = Vector3.zero;
+        this.transform.rotation = Quaternion.identity;
+        StartCoroutine(BuildChunkColumn());
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 }

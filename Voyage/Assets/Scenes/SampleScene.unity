@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -173,7 +173,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 170076733}
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalPosition: {x: 6.12, y: 17.58, z: -11.51}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -251,7 +251,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 534669902}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0.03, y: 0.02, z: 1.59}
+  m_LocalPosition: {x: 2.1, y: 5, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -324,7 +324,19 @@ Prefab:
       propertyPath: worldSize
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 114205089455848238, guid: 886935cf2c66d471394e335967023b7e,
+        type: 2}
+      propertyPath: block
+      value: 
+      objectReference: {fileID: 1485259466131178, guid: a21bd503e6d9c2548ba5414a8f70776a,
+        type: 2}
+    - target: {fileID: 114205089455848238, guid: 886935cf2c66d471394e335967023b7e,
+        type: 2}
+      propertyPath: textureAtlas
+      value: 
+      objectReference: {fileID: 2100000, guid: 3fe20b6d551504fdc9d75319111e8cdc, type: 2}
+    m_RemovedComponents:
+    - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 886935cf2c66d471394e335967023b7e, type: 2}
   m_IsPrefabAsset: 0
 --- !u!1 &1342613159
@@ -347,17 +359,15 @@ GameObject:
 --- !u!114 &1342613160
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 114205089455848238, guid: 886935cf2c66d471394e335967023b7e,
-    type: 2}
-  m_PrefabInternal: {fileID: 1085161644}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1342613159}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ac9075e7d23140f4a316164703f3033, type: 3}
+  m_Script: {fileID: 11500000, guid: 997510ca8e19d8146babf7aef20e3380, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  block: {fileID: 1516452222374716, guid: de872c1763c824cbab55cfc4844f22e2, type: 2}
-  worldSize: 1
+  textureAtlas: {fileID: 2100000, guid: 3fe20b6d551504fdc9d75319111e8cdc, type: 2}
 --- !u!4 &1342613161
 Transform:
   m_ObjectHideFlags: 0
