@@ -19,7 +19,7 @@ public class Chunk {
                     int worldY = (int)(y + chunk.transform.position.y);
                     int worldZ = (int)(z + chunk.transform.position.z);
 
-                    if (worldY <= Utils.GenerateFloorHeight(worldX,worldZ))
+                    if (worldY <= Utils.GenerateIslandHeight(worldX,worldZ))
                     {
                         chunkData[x, y, z] = new Block(Block.BlockType.DIRT, pos,
                                                       chunk.gameObject, cubeMaterial, this);

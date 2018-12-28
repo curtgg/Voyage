@@ -6,8 +6,8 @@ public class World : MonoBehaviour {
 
 	public Material textureAtlas;
 	public static int columnHeight = 8;
-	public static int chunkSize = 8;
-    public static int worldSize = 8;
+	public static int chunkSize = 12;
+    public static int worldSize = 32;
 	public static Dictionary<string, Chunk> chunks;
 
 	public static string BuildChunkName(Vector3 v)
@@ -24,9 +24,12 @@ public class World : MonoBehaviour {
                 for (int y = 0; y < columnHeight; y++)
 		        {
 			        Vector3 chunkPosition = new Vector3(x*chunkSize,y*chunkSize,z*chunkSize);
-			        Chunk c = new Chunk(chunkPosition, textureAtlas);
-			        c.chunk.transform.parent = this.transform;
-			        chunks.Add(c.chunk.name, c);
+                    //If chunk has not been built yet
+                    if(!chunks.ContainsKey(BuildChunkName(chunkPosition))){
+                        Chunk c = new Chunk(chunkPosition, textureAtlas);
+                        c.chunk.transform.parent = this.transform;
+                        chunks.Add(c.chunk.name, c);
+                    }
 		        }
 
 		foreach(KeyValuePair<string, Chunk> c in chunks)
