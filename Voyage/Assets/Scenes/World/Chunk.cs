@@ -8,28 +8,28 @@ public class Chunk {
     public Block[,,] chunkData = new Block[World.chunkSize, World.chunkSize, World.chunkSize];
     public GameObject chunk;
 
-	IEnumerator BuildChunk()
+	void BuildChunk()
 	{
 		for(int z = 0; z < World.chunkSize; z++)
 			for(int y = 0; y < World.chunkSize; y++)
 				for(int x = 0; x < World.chunkSize; x++)
 				{
 					Vector3 pos = new Vector3(x,y,z);
-                    if(Random.Range(0,100) < 25)
+                    int worldX = (int)(x + chunk.transform.position.x);
+                    int worldY = (int)(y + chunk.transform.position.y);
+                    int worldZ = (int)(z + chunk.transform.position.z);
+
+                    if (worldY <= Utils.GenerateFloorHeight(worldX,worldZ))
                     {
-                        chunkData[x, y, z] = new Block(Block.BlockType.STONE, pos,
+                        chunkData[x, y, z] = new Block(Block.BlockType.DIRT, pos,
                                                       chunk.gameObject, cubeMaterial, this);
-                    } else if (Random.Range(0,100) > 80)
+                    }
+                    else 
                     {
                         chunkData[x, y, z] = new Block(Block.BlockType.AIR, pos,
                                                       chunk.gameObject, cubeMaterial, this);
-                    } else 
-                    {
-                        chunkData[x, y, z] = new Block(Block.BlockType.GRASS, pos,
-                                                      chunk.gameObject, cubeMaterial, this);
                     }                 
 				}
-        return null;
     }
 
     public void DrawChunk()
