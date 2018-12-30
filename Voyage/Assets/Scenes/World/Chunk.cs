@@ -7,6 +7,8 @@ public class Chunk {
 	public Material cubeMaterial;
     public Block[,,] chunkData = new Block[World.chunkSize, World.chunkSize, World.chunkSize];
     public GameObject chunk;
+    public ChunkStatus status;
+    public enum ChunkStatus { DRAW , DONE , KEEP };
 
 	void BuildChunk()
 	{
@@ -32,7 +34,9 @@ public class Chunk {
                     {
                         chunkData[x, y, z] = new Block(Block.BlockType.AIR, pos,
                                                       chunk.gameObject, cubeMaterial, this);
-                    }                 
+                    }
+
+                    status = ChunkStatus.DRAW;
 				}
     }
 
@@ -48,6 +52,7 @@ public class Chunk {
         CombineQuads();
         MeshCollider collider = chunk.gameObject.AddComponent(typeof(MeshCollider)) as MeshCollider;
         collider.sharedMesh = chunk.transform.GetComponent<MeshFilter>().mesh;
+        status = ChunkStatus.DONE;
     }
 
     public Chunk(Vector3 position, Material c)
