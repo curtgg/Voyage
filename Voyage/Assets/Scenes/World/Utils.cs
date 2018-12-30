@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Utils {
 
-    public static int maxSkyHeight = 64;
-    public static int maxFloorHeight = 30;
+    public static int maxSkyHeight = 256;
+    public static int maxFloorHeight = 16;
     static float smooth = 0.01f;
     static int octaves = 4;
     static float persistence = 0.5f;
@@ -18,7 +18,7 @@ public class Utils {
 
     public static int GenerateIslandHeight(float x, float y)
     {
-        float pers = 1f;
+        float pers = 2f;
         float height = Map(0, maxSkyHeight, 0, 1, fBM2(x * smooth, y * smooth, octaves, pers));
         return (int)height;
     }
@@ -51,8 +51,8 @@ public class Utils {
     static float fBM2(float x, float z, int oct, float pers)
     {
         float total = 0;
-        float frequency = 1;
-        float amplitude = 1;
+        float frequency = 0.2f;
+        float amplitude = 128;
         float maxValue = 0;
         for (int i = 0; i < oct; i++)
         {
@@ -63,21 +63,6 @@ public class Utils {
             amplitude *= pers;
             frequency *= 2;
         }
-
-        frequency = 0.4f;
-        amplitude = 32;
-
-        for (int i = 0; i < 2; i++)
-        {
-            total += Mathf.PerlinNoise(x * frequency, z * frequency) * amplitude;
-
-            maxValue += amplitude;
-
-            amplitude *= pers;
-            frequency *= 2;
-        }
-
-
 
         return total / maxValue;
     }

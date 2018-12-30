@@ -19,12 +19,16 @@ public class Chunk {
                     int worldY = (int)(y + chunk.transform.position.y);
                     int worldZ = (int)(z + chunk.transform.position.z);
 
-                    if (worldY <= Utils.GenerateIslandHeight(worldX,worldZ))
+                    if (worldY == Utils.GenerateIslandHeight(worldX,worldZ))
                     {
-                        chunkData[x, y, z] = new Block(Block.BlockType.DIRT, pos,
+                        chunkData[x, y, z] = new Block(Block.BlockType.GRASS, pos,
                                                       chunk.gameObject, cubeMaterial, this);
                     }
-                    else 
+                    else if (worldY < Utils.GenerateIslandHeight(worldX, worldZ)){
+                        chunkData[x, y, z] = new Block(Block.BlockType.DIRT, pos,
+                                                          chunk.gameObject, cubeMaterial, this);
+                    }
+                    else
                     {
                         chunkData[x, y, z] = new Block(Block.BlockType.AIR, pos,
                                                       chunk.gameObject, cubeMaterial, this);
@@ -42,6 +46,8 @@ public class Chunk {
                 }
 
         CombineQuads();
+        MeshCollider collider = chunk.gameObject.AddComponent(typeof(MeshCollider)) as MeshCollider;
+        collider.sharedMesh = chunk.transform.GetComponent<MeshFilter>().mesh;
     }
 
     public Chunk(Vector3 position, Material c)
