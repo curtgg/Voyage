@@ -6,6 +6,7 @@ public class Utils {
 
     public static int maxSkyHeight = 256;
     public static int maxFloorHeight = 16;
+    public static int perlinOffset = 24000; //Used to ensure we do not calculate perlin with a negative value, as thi
     static float smooth = 0.01f;
     static int octaves = 4;
     static float persistence = 0.5f;
@@ -56,7 +57,7 @@ public class Utils {
         float maxValue = 0;
         for (int i = 0; i < oct; i++)
         {
-            total += Mathf.PerlinNoise(x * frequency, z * frequency) * amplitude;
+            total += Mathf.PerlinNoise((x+perlinOffset) * frequency, (z+perlinOffset) * frequency) * amplitude;
 
             maxValue += amplitude;
 
