@@ -1,6 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+using System;
 using UnityEngine;
+
+[Serializable]
+class BlockData{
+    public Block.BlockType[,,] matrix;
+
+    public BlockData(){}
+
+    public BlockData(Block[,,] b){
+        matrix = new Block.BlockType[World.chunkSize, World.chunkSize, World.chunkSize];
+        for (int z = 0; z < World.chunkSize; z++)
+            for (int y = 0; y < World.chunkSize; y++)
+                for (int x = 0; x < World.chunkSize; x++){
+                    matrix[x, y, z] = b[x, y, z].bType;
+                }
+    }
+}
+
 
 public class Chunk {
 
@@ -8,10 +28,14 @@ public class Chunk {
     public Block[,,] chunkData = new Block[World.chunkSize, World.chunkSize, World.chunkSize];
     public GameObject chunk;
     public ChunkStatus status;
+    BlockData bd;
     public enum ChunkStatus { DRAW , DONE , KEEP };
 
 	void BuildChunk()
 	{
+        bool chunkBuilt = false; //Chunk has already been generated and saved to disk
+        chunkBuilt = Load();
+
 		for(int z = 0; z < World.chunkSize; z++)
 			for(int y = 0; y < World.chunkSize; y++)
 				for(int x = 0; x < World.chunkSize; x++)
@@ -20,6 +44,14 @@ public class Chunk {
                     int worldX = (int)(x + chunk.transform.position.x);
                     int worldY = (int)(y + chunk.transform.position.y);
                     int worldZ = (int)(z + chunk.transform.position.z);
+
+
+                    if(chunkBuilt)
+                    {
+                        chunkData[x, y, z] = new Block(bd.matrix[x, y, z], pos, chunk.gameObject, cubeMaterial, this);
+                        continue;
+                    }
+                    
 
                     if (worldY == Utils.GenerateIslandHeight(worldX,worldZ))
                     {
@@ -94,4 +126,42 @@ public class Chunk {
 
 	}
 
+    string BuildChunkFileName(Vector3 v)
+    {
+        return Application.persistentDataPath + "/savedata/Chunk_" +
+                            (int)v.x + "-" +
+                                (int)v.y + "-" +
+                                    (int)v.z + "-" +
+                                    World.chunkSize +
+                          "-" + World.renderRadius + ".dat";
+    }
+
+    bool Load()
+    {
+        string chunkFile = BuildChunkFileName(chunk.transform.position);
+        if(File.Exists(chunkFile))
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = File.Open(chunkFile, FileMode.Open);
+            bd = new BlockData();
+            bd = (BlockData) bf.Deserialize(file);
+            file.Close();
+            return true;
+        }
+        return false;
+    }
+
+    public void Save()
+    {
+        string chunkFile = BuildChunkFileName(chunk.transform.position);
+        if (!File.Exists(chunkFile))
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(chunkFile));
+        }
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream file = File.Open(chunkFile, FileMode.OpenOrCreate);
+        bd = new BlockData(chunkData);
+        bf.Serialize(file,bd);
+        file.Close();
+    }
 }
